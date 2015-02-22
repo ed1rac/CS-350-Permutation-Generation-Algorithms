@@ -7,7 +7,12 @@ CS 350
 Winter 2015
 
 Project Abstract:
-	A formal mathematical analysis of two algorithms-Heap's, and Steinhaus-Johnson-Trotter -for generating permutations of a set. Implementation, execution  and analysis of space and time performance of these two algorithms in Python. Additional consideration is given to the nature of generating permutations, and how these two algorithms differ in solving that problem.
+	A formal mathematical analysis of two algorithms-Heap's,
+	 and Steinhaus-Johnson-Trotter -for generating permutations 
+	of a set. Implementation, execution  and analysis of space 
+	and time performance of these two algorithms in Python. 
+	Additional consideration is given to the nature of generating 
+	permutations, and how these two algorithms differ in solving that problem.
 
 Area of Analysis:
 	Talk about the general class of generating permutations.
