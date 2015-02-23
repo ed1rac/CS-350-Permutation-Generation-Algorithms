@@ -1,2 +1,58 @@
-Hey, starting next week I'll add the outline of our writeup which
-I will quickly begin filling in
+Design and Analysis of Two Algorithms for Generating Permutations of a Set
+	by Ryan Bernstein
+	   Ruben Niculcea
+	   Levi Schoen
+
+CS 350
+Winter 2015
+
+Project Abstract:
+	A formal mathematical analysis of two algorithms-Heap's,
+	 and Steinhaus-Johnson-Trotter -for generating permutations 
+	of a set. Implementation, execution  and analysis of space 
+	and time performance of these two algorithms in Python. 
+	Additional consideration is given to the nature of generating 
+	permutations, and how these two algorithms differ in solving that problem.
+
+Area of Analysis:
+	Talk about the general class of generating permutations.
+	Different methods: loopless, recursive, adjacent exchanges, factorial counting
+	The last point is a simple rehash of R. Sedgewick's paper.....
+	Problem Bottlenecks 
+
+Methods:
+	Heap's:
+		Run time
+		Correctness
+		Termination
+	SJT:
+		Run time
+		Correctness
+		Termination
+Results & Analysis:
+	Heap's:
+		Space
+		Time
+		Additional Notes
+	SJT:
+		Space
+		Time
+		Additional Notes
+		
+Conclusion:
+	Time and space trade-off's of the two, specific applications where one might be better than the other, or is one generally better? 
+	Limitations
+
+References:
+	General:
+		Robert Sedgewick, 1977, ACM, "Permutation Generation Methods
+		Writing the paper (http://www.owlnet.rice.edu/~cainproj/courses/comp482/comp482PaperGuide_F07.pdf)
+	SJT:
+	http://en.wikipedia.org/wiki/Steinhaus%E2%80%93Johnson%E2%80%93Trotter_algorithm
+	http://www.cut-the-knot.org/Curriculum/Combinatorics/JohnsonTrotter.shtml
+	http://faculty.simpson.edu/lydia.sinapova/www/cmsc250/LN250_Levitin/PDF/L07-PermutationsSubsets.pdf
+
+	Heap's:
+		http://en.wikipedia.org/wiki/Heap%27s_algorithm
+
+Notes: Extra swap for Heap's 
