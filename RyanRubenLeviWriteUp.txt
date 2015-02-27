@@ -22,10 +22,12 @@ Area of Analysis:
 
 Methods:
 	Heap's:
+		Implemenation
 		Run time
 		Correctness
 		Termination
 	SJT:
+		Implemenation 
 		Run time
 		Correctness
 		Termination
