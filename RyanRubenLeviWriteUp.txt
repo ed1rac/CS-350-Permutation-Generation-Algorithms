@@ -22,6 +22,13 @@ Area of Analysis:
 
 Methods:
 	Heap's:
+		Explanation:
+			// WIP
+			Heap's algorithm is a permutation generation algorithm. It works by recursively calling itself and at the end of each recursion is swaps either the first or the 
+
+			// Wikipedia
+			First we set a counter i  to 1. Now we perform the following steps repeatedly, until i  is bigger than N. We use the algorithm to generate the (N − 1)! permutations of the first N − 1 elements, adjoining the last element to each of these. This generates all of the permutations that end with the last element. Then if N is odd, we switch the first element and the last one, while if N is even we can switch the i th element and the last one (there is no difference between N even and odd in the first iteration). We add one to the counter i and repeat. In each iteration, the algorithm will produce all of the permutations that end with the element that has just been moved to the "last" position.
+
 		Implemenation:
 			algorithm Heaps(n, A):
 			//Outputs all the permutations of A using Heap's algorithm
@@ -43,6 +50,7 @@ Methods:
 		Correctness
 		Termination
 	SJT:
+		Explanation:
 		Implemenation 
 		Run time
 		Correctness
