@@ -48,7 +48,17 @@ Methods:
 
 		Run time
 		Correctness
+			Given an array Elements[n] with n elements
+			Proof follows by induction.
+			A(1) is obviously true, a one element set is sorted.
+			Assume A(n) for all n >= 1.
+			Prove for A(n+1)
+			We know the solution for A(n) is distinct, and does not contain 			the element Elements[n+1]. First compute A(n), then run Heap's by inserting Elements[n+1] into each subset of A(n). Since each subset of A(n) is distinct, and disjoint with Elements[n+1], this insertion preserves the distinctness of our result and gives us the correct solution to A(n+1).
 		Termination
+			Base case of n elements where n=1 is obviously sorted.
+			At each step of Heap's, we recurse and break n down by a 
+			factor of 1.
+			Eventually we reach the the base case of 1 element, as n must be a 			positive integer, so no infinite descent is possible.
 	SJT:
 		Explanation:
 		Implemenation 
