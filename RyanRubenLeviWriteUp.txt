@@ -24,10 +24,10 @@ Methods:
 	Heap's:
 		Explanation:
 			// WIP
-			Heap's algorithm is a permutation generation algorithm. It works by recursively calling itself and at the end of each recursion is swaps either the first or the 
+			Heap's algorithm is a permutation generation algorithm. It works 			by recursively calling itself and at the end of each recursion is 			swaps either the first or the last element.
 
 			// Wikipedia
-			First we set a counter i  to 1. Now we perform the following steps repeatedly, until i  is bigger than N. We use the algorithm to generate the (N − 1)! permutations of the first N − 1 elements, adjoining the last element to each of these. This generates all of the permutations that end with the last element. Then if N is odd, we switch the first element and the last one, while if N is even we can switch the i th element and the last one (there is no difference between N even and odd in the first iteration). We add one to the counter i and repeat. In each iteration, the algorithm will produce all of the permutations that end with the element that has just been moved to the "last" position.
+			First we set a counter i  to 1. Now we perform the following steps 			repeatedly, until i  is bigger than N. We use the algorithm to 				generate the (N − 1)! permutations of the first N − 1 elements, 			adjoining the last element to each of these. This generates all of 			the permutations that end with the last element. Then if N is odd, 			we switch the first element and the last one, while if N is even 			we can switch the i th element and the last one (there is no 				difference between N even and odd in the first iteration). We add 			one to the counter i and repeat. In each iteration, the algorithm 			will produce all of the permutations that end with the element 				that has just been moved to the "last" position.
 
 		Implemenation:
 			algorithm Heaps(n, A):
@@ -46,25 +46,27 @@ Methods:
 	            swap(A[j], A[n])
 	            i ← i + 1
 
-		Run time
 		Correctness
 			Given an array Elements[n] with n elements
 			Proof follows by induction.
 			A(1) is obviously true, a one element set is sorted.
 			Assume A(n) for all n >= 1.
 			Prove for A(n+1)
-			We know the solution for A(n) is distinct, and does not contain 			the element Elements[n+1]. First compute A(n), then run Heap's by inserting Elements[n+1] into each subset of A(n). Since each subset of A(n) is distinct, and disjoint with Elements[n+1], this insertion preserves the distinctness of our result and gives us the correct solution to A(n+1).
+			We know the solution for A(n) is distinct, and does not contain 			the element Elements[n+1]. First compute A(n), then run Heap's by 			inserting Elements[n+1] into each subset of A(n). Since each 				subset of A(n) is distinct, and disjoint with Elements[n+1], this 			insertion preserves the distinctness of our result and gives us 			the correct solution to A(n+1).
 		Termination
 			Base case of n elements where n=1 is obviously sorted.
 			At each step of Heap's, we recurse and break n down by a 
 			factor of 1.
 			Eventually we reach the the base case of 1 element, as n must be a 			positive integer, so no infinite descent is possible.
+		Space Complexity
+		Time Complexity
 	SJT:
 		Explanation:
 		Implemenation 
-		Run time
 		Correctness
 		Termination
+		Space Complexity
+		Time Complexity
 Results & Analysis:
 	Heap's:
 		Space
