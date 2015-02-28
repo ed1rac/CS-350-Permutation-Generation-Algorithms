@@ -22,7 +22,23 @@ Area of Analysis:
 
 Methods:
 	Heap's:
-		Implemenation
+		Implemenation:
+			algorithm Heaps(n, A):
+			//Outputs all the permutations of A using Heap's algorithm
+			//Input: A is a set, n is the cardinality of the set A
+			//Output: The permutations of A
+	    if n = 1 then
+	          output(A)
+	    else
+	        for i ← 1 to n
+	            Heaps(n - 1, A)
+	            if n is odd then
+	                j ← 1
+	            else
+	                j ← i
+	            swap(A[j], A[n])
+	            i ← i + 1
+
 		Run time
 		Correctness
 		Termination
