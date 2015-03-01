@@ -13,5 +13,5 @@
 - [ ] Running code and recording results __-Ryan__
 - [ ] Analysis and conclusion's from results __-Group__
 ##References
-Great verbal walkthrough of both methods: http://www.cs.uni.edu/~wallingf/teaching/cs3530/sessions/session15.html
+-Great verbal walkthrough of both methods: http://www.cs.uni.edu/~wallingf/teaching/cs3530/sessions/session15.html
   

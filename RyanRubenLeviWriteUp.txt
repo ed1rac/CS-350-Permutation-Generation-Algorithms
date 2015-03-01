@@ -8,18 +8,20 @@ Winter 2015
 
 Project Abstract:
 	A formal mathematical analysis of two algorithms-Heap's,
-	 and Steinhaus-Johnson-Trotter -for generating permutations 
+	and Steinhaus-Johnson-Trotter -for generating permutations 
 	of a set. Implementation, execution  and analysis of space 
 	and time performance of these two algorithms in Python. 
 	Additional consideration is given to the nature of generating 
 	permutations, and how these two algorithms differ in solving that problem.
 
 Area of Analysis:
-	Talk about the general class of generating permutations.
-	Different methods: loopless, recursive, adjacent exchanges, factorial counting
-	The last point is a simple rehash of R. Sedgewick's paper.....
-	Problem Bottlenecks 
+	The application and study of algorithms in the field of 				combinatorics-particularly permutation generation-is an exciting area of 		theoretical study, albeit with dull practical outcomes and application. This is 	due to 	the fact, that as far as mathematician's and computer science have 		ascertained, distinct and complete permutation generation of a set is a problem 	that is NP hard. There has yet to be an algorithm that solves this problem with 	even less than 	O(n!) time complexity. The differences in the algorithms are 		wrinkles that allow for more space efficient computations, or that merely exist to 	show the cleverness of the designer with a novel application of a design pattern 	to the problem.
 
+	Algorithms for this problem fall into two camps: those based off of 			exchanging one element for another element-with each bubbling generating a new and 	unique subset-and those that do something else, such as nested cycling, sort 		cycling, or random set generation-which has actual utility in cases where it's 		more important that a given subset generated is unique as opposed to generating 	all such subset. Our first algorithm, Heap's Algorithm, is a recursive twist on 	the exchange method. The second, Steinhaus-Johnson-Trotter, is an adjacent 		exchange method implemented iteratively with one loop structure-though there are 	recursive versions of this algorithm as well.
+
+	The retractable nature of this problem has lead to the discovery and refinement of 	more efficient combinatorial search optimization algorithms, with emphasis on the 	use of backtracking and mathematical programming, most notably being the solution 	to the four coloring graph problem.  
+
+	
 Methods:
 	Heap's:
 		Explanation:
