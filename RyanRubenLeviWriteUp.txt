@@ -82,7 +82,9 @@ Methods:
 		Explanation:
 		Implemenation 
 		Correctness
+			It is clear that this method will generate all n!permutations on n 			elements with attendant directions once and only once. For each 			fixed permutation on the elements with particular set of 				orientation from 1 to k we move the element with it's orientation 			k + 1 in one direction through every possible position, thus 				giving each permutation on k + 1 elements with the same set of 				orientations  once and only once provided 			we 			have every permutation on k orientations once and only once. Since 			the method can be verified easily for k = 2 or 3, the induction is 			complete.
 		Termination
+			We start with one largest mobile element, which we have to move n 			times, until it becomes immobile(not all moves may occur 				simultaneously). At this point we have a new largest element, 				which we can move at most n-1 times until it becomes immobile. We 			will have in total during the running of this algorithm, n largest 			mobile elements, with each largest mobile elements moving one less 			time than it's predecessor. Since this is a finite number, the 				algorithm itself will always terminate in exactly n! steps. Not 			coincidentally , this is also the time complexity of the algorithm 			itself. 
 		Space Complexity
 		Time Complexity
 Results & Analysis:
@@ -104,11 +106,12 @@ References:
 	General:
 		Robert Sedgewick, 1977, ACM, "Permutation Generation Methods
 		Writing the paper (http://www.owlnet.rice.edu/~cainproj/courses/comp482/comp482PaperGuide_F07.pdf)
+		Great verbal walkthrough of both methods: http://www.cs.uni.edu/~wallingf/teaching/cs3530/sessions/session15.html
 	SJT:
 	http://en.wikipedia.org/wiki/Steinhaus%E2%80%93Johnson%E2%80%93Trotter_algorithm
 	http://www.cut-the-knot.org/Curriculum/Combinatorics/JohnsonTrotter.shtml
 	http://faculty.simpson.edu/lydia.sinapova/www/cmsc250/LN250_Levitin/PDF/L07-PermutationsSubsets.pdf
-
+	http://www.ams.org/journals/mcom/1963-17-083/S0025-5718-1963-0159764-2/S0025-5718-1963-0159764-2.pdf
 	Heap's:
 		http://en.wikipedia.org/wiki/Heap%27s_algorithm
 
