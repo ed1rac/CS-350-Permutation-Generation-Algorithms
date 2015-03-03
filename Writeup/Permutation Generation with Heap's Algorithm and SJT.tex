@@ -6,7 +6,7 @@
 \usepackage{graphicx}				% Use pdf, png, jpg, or eps§ with pdflatex; use eps in DVI mode
 								% TeX will automatically convert eps --> pdf in pdflatex		
 \usepackage{amssymb}
-%\usepackage{amsmath}
+\usepackage{amsmath}
 
 \setlength{\topmargin}{-0.5in}
 \setlength{\textheight}{9in}
@@ -53,42 +53,75 @@ To find the total running time of our algorithm, we'll look at the number of tim
 
 From the code above, we can count how many times each of these operations is performed, \emph{not} including work done within the recursive calls. To better facilitate our analysis, we will also include the number of recursive calls.
 
-\subsubsection{Swaps}
+\begin{description}
+\item Swaps
 
-The swap operation appears only once in our implementation, on line 14. This line is never executed when $n=1$; if $n > 1$, the loop containing it executes $n$ times.
+	The swap operation appears only once in our implementation, on line 14. This line is never executed when $n=1$; if $n > 1$, the loop containing it executes $n$ times.
 
-\subsubsection{Comparisons}
+\item Comparisons
 
-A comparison appears on line 5 regardless of the current value of $n$. Another comparison appears within the loop on line 10, which executes $n$ times for all $n > 1$. The second comparison also includes a division for modular arithmetic; we will also consider this an $O(n)$ operation.
+	A comparison appears on line 5 regardless of the current value of $n$. Another comparison appears within the loop on line 10, which executes $n$ times for all $n > 1$. The second comparison also includes a division for modular arithmetic; we will also consider this an $O(n)$ operation.
 
-\subsubsection{Assignments}
+\item Assignments
 
-Not counting the assignments that appear within the swaps, a single assignment occurs on either line 11 or line 13. This is dependent on the result of the comparison on line 10.
+	Not counting the assignments that appear within the swaps, a single assignment occurs on either line 11 or line 13. This is dependent on the result of the comparison on line 10.
 
-\subsubsection{Processes}
+\item Processes
 
-We only process a permutation in the base case of our recursion, when $n = 1$. Thus we execute a process once when $n = 1$ and 0 times in any other case.
+	We only process a permutation in the base case of our recursion, when $n = 1$. Thus we execute a process once when $n = 1$ and 0 times in any other case.
+\end{description}
+
+\subsubsection{Factoring In Recursion}
 
 Our total number of operations (not counting recursion) can be represented by the following table:
 
 \begin{center}
-\begin{tabular}{|c|c|c|c|c|c|}
+\begin{tabular}{|c|c|c|c|c|c|c|}
 	\hline
-	$n$ & 1 & 2 & 3 & 4 & 5 \\
+	Input Size & 1 & 2 & 3 & 4 & 5 & $n > 1$\\
 	\hline
-	Swaps & 0 & 2 & 3 & 4 & 5 \\
+	Swaps & 0 & 2 & 3 & 4 & 5 & $n$\\
 	\hline
-	Comparisons & 1 & 3 & 4 & 5 & 6 \\
+	Comparisons & 1 & 3 & 4 & 5 & 6 & $n + 1$ \\
 	\hline
-	Assignments & 0 & 2 & 3 & 4 & 5 \\
+	Assignments & 0 & 2 & 3 & 4 & 5 & $n$ \\
 	\hline
-	Processes & 1 & 0 & 0 & 0 & 0 \\
+	Processes & 1 & 0 & 0 & 0 & 0 & 0 \\
 	\hline
-	Recursive calls & 0 & 2 & 3 & 4 & 5 \\
+	Recursive calls & 0 & 2 & 3 & 4 & 5 & $n$ \\
 	\hline
 \end{tabular}
 \end{center}
 
+Looking only at the recursive calls, it becomes clear that the number of recursive calls made for an input of size $n$ is 0 when $n = 1$ and $n$ for any $n > 1$ (we can confirm this by looking at the loop in our code). It follows that if we wish to include operations executed within recursive calls, the total number of times that each operation will execute on an input of size $n$ will be the number of times that this operation executes in the work function plus $n$ times the number of times that operation is performed for an input of size $n - 1$.
+
+This means that with recursion factored in, the total number of swaps, assignments, and recursive calls can be expressed as follows:
+\begin{align*}
+	T(n) &= n \cdot T(n - 1) + n \\
+	\frac{T(n)}{n!} &= \frac{T(n - 1)}{(n - 1)!} + \frac{1}{(n - 1)!} &\text{Divide by $n!$} \\
+	&= \sum_{i = 1}^{n} \frac{1}{(i - 1)!} &\text{Since $T(1) = 0$} \\
+	&= \sum_{i = 1}^{n - 1} \frac{1}{i!} \\
+	T(n) &= n! \cdot \sum_{i = 1}^{n - 1} \frac{1}{i!} &\text{Multiply by $n!$}
+\end{align*}
+
+The number of comparisons is similar:
+\begin{align*}
+	T(n) &= n \cdot T(n - 1) + n + 1 \\
+	\frac{T(n)}{n!} &= \frac{T(n - 1)}{(n - 1)!} + \frac{1}{(n - 1)!} + \frac{1}{n!} &\text{Divide by $n!$} \\
+	&= 1 + \frac{1}{(n - 1)!} + \frac{1}{n!} &\text{Since $T(1) = 0! = 1$} \\
+	&= 1 + \sum_{i = 1}^{n - 1} \frac{1}{i!} + \sum_{i = 1}^{n} \frac{1}{i!} \\
+	&= 1 + 2 \sum_{i = 1}^{n - 1} \frac{1}{i!} + \frac{1}{n!} \\
+	T(n) &= n! + 2n! \sum_{i = 1}^{n - 1} \frac{1}{i!} + 1 &\text{Multiply by $n!$}
+\end{align*}
+
+Combining this with the time complexity of each operation, the overall time complexity is therefore as follows:
+\begin{align*}
+	&2 \cdot \left( n! \cdot \sum_{i = 1}^{n - 1} \frac{1}{i!} \right) + \left( n! + 2n! \cdot \sum_{i = 1}^{n - 1} \frac{1}{i!} + 1 \right) + n \\
+	&= n! \cdot \left(1 + 4 \cdot \sum_{1}^{n - 1} \frac{1}{i!} \right) + 1 + n
+\end{align*}
+
 \subsection{Space Complexity}
+
+\section{The Steinhaus-Johnson-Trotter Algorithm}
 
 \end{document}  
