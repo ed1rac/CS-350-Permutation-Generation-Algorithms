@@ -3,8 +3,8 @@
 ## TODO:  
 ###### Add or Pick a task and mark it if your working on it.  
 - [X] Implementations, for testing __-Ruben__
-- [X] Pseudocode __-Ruben__
-- [X] Write up of how SJT & Heaps works __-Ruben__
+- [ ] Pseudocode __-Ruben__
+- [ ] Write up of how SJT & Heaps works __-Ruben__
 - [X] Time Complexity __-Ryan__
 - [X] Space Complexity __-Ryan__
 - [X] Analyze Termination __-Levi__
