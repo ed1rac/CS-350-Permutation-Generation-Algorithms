@@ -8,6 +8,9 @@ def sjt(items, time=False):
     #default direction of items in sjt
     dirItems = [["<-", i] for i in items]
 
+    if len(items) == 0:
+      return perms
+
     perms.append(outputPermutation(dirItems))
 
     while True:

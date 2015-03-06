@@ -5,7 +5,7 @@
 - [X] Implementations, for testing __-Ruben__
 - [ ] Pseudocode __-Ruben__
 - [ ] Write up of how SJT & Heaps works __-Ruben__
-- [ ] Implement Test Suite __-Ruben__
+- [X] Implement Test Suite __-Ruben__
 - [X] Time Complexity __-Ryan__
 - [X] Space Complexity __-Ryan__
 - [X] Analyze Termination __-Levi__
@@ -27,3 +27,24 @@ You can also turn on profiling by passing a True parameter after the array:
 
 >heaps([1, 2, 3, 4], True)
   
+
+##### Running The Test Suite:
+
+Because I am using a 3rd party python library that generates random datasets it is important to install these python libraries in a virtual environment in order to not pollute your system python install.
+
+Initlize a virtual environment in current directory:
+>virtualenv .
+
+Activate virtual environment:
+>source bin/activate
+
+Install virtual environment dependences:
+>pip install -r requirements.txt
+
+Deactivate virtual environment:
+>deactivate
+
+Run the tests:  
+(Make sure this is ran within the virtual environment)
+>py.test -v tests.py 
+

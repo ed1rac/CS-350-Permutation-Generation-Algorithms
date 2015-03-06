@@ -3,10 +3,12 @@ from copy import deepcopy
 
 def heaps(set, time=False):
   def innerHeaps(n, set, perms=[]):
-    if n == 1:
+    if n == 0:
+      return perms
+    elif n == 1:
       perms.append(deepcopy(set))
       return perms
-    else: 
+    else:
       for i in range(n):
         innerHeaps(n-1, set)
         if n % 2 == 1: #odd number

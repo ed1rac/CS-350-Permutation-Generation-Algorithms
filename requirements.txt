@@ -1,0 +1,4 @@
+py==1.4.26
+pytest==2.6.4
+pytest-quickcheck==0.8.2
+wsgiref==0.1.2

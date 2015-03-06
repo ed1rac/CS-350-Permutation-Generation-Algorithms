@@ -3,3 +3,9 @@
 *.toc
 *.aux
 *.pyc
+
+# Virtualenv
+.Python
+bin
+lib
+include
