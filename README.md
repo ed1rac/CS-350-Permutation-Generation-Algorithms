@@ -30,6 +30,12 @@ You can also turn on profiling by passing a True parameter after the array:
 
 ##### Running The Test Suite:
 
+The Test Suite runs 20 tests. 
+10 for Heaps and 10 for SJT. 
+Each test run is completely randomized.
+For each test a random set is passed in that contains between 0-6 intergers. (Both positive and negative.)
+This set is then ran on Heaps or SJT and the output is compared to the python standard library permutations function.
+
 Because I am using a 3rd party python library that generates random datasets it is important to install these python libraries in a virtual environment in order to not pollute your system python install.
 
 Initlize a virtual environment in current directory:
