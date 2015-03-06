@@ -1,10 +1,12 @@
 import cProfile
+from copy import deepcopy
 
 def heaps(set, time=False):
-  def innerHeaps(n, set):
+  def innerHeaps(n, set, perms=[]):
     if n == 1:
-      print set
-    else:
+      perms.append(deepcopy(set))
+      return perms
+    else: 
       for i in range(n):
         innerHeaps(n-1, set)
         if n % 2 == 1: #odd number
@@ -13,8 +15,10 @@ def heaps(set, time=False):
           j = i
         set[j], set[n-1] = set[n-1], set[j] #swap
 
+    return perms
+
   if time:
     #profile in context because of inner function
-    cProfile.runctx('innerHeaps(len(set), set)', None, locals())
+    return cProfile.runctx('innerHeaps(len(set), set)', None, locals())
   else:
-    innerHeaps(len(set), set)
+    return innerHeaps(len(set), set)

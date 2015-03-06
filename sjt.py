@@ -4,10 +4,11 @@ import cProfile
 #we should just assume our list is sorted though...
 def sjt(items, time=False):
   def innerSJT(items):
+    perms = []
     #default direction of items in sjt
     dirItems = [["<-", i] for i in items]
 
-    printPermutation(dirItems)
+    perms.append(outputPermutation(dirItems))
 
     while True:
       mobileIndex = largestMobileIndex(dirItems)
@@ -17,16 +18,17 @@ def sjt(items, time=False):
 
       mobileIndex += swapItemInDirection(mobileIndex, dirItems)
 
-      printPermutation(dirItems)
+      perms.append(outputPermutation(dirItems))
 
       revItemDirectionLargerThen(mobileIndex, dirItems)
 
+    return perms
 
   if time:
     #profile in context because of inner function
-    cProfile.runctx('innerSJT(items)', None, locals())
+    return cProfile.runctx('innerSJT(items)', None, locals())
   else:
-    innerSJT(items)
+    return innerSJT(items)
 
 
 def swapItemInDirection(i, items):
@@ -77,10 +79,10 @@ def revItemDirectionLargerThen(i, items):
         items[j][0] = "<-"
 
 
-def printPermutation(items):
+def outputPermutation(items):
   permutation = []
   for item in items:
     permutation.append(item[1])
 
-  print permutation
+  return permutation
   
