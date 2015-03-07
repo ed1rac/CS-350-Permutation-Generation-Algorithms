@@ -1,4 +1,4 @@
-\documentclass[11pt, oneside]{article}   	% use "amsart" instead of "article" for AMSLaTeX format
+\documentclass[10pt, oneside]{article}   	% use "amsart" instead of "article" for AMSLaTeX format
 \usepackage{geometry}                		% See geometry.pdf to learn the layout options. There are lots.
 \geometry{letterpaper}                   		% ... or a4paper or a5paper or ... 
 %\geometry{landscape}                		% Activate for for rotated page geometry
@@ -25,6 +25,10 @@
 
 \section{Heap's Algorithm}
 
+\subsection{Proof of Termination}
+
+\subsection{Proof of Correctness}
+
 \subsection{Time Complexity}
 
 The significant portion of our implementation of Heap's Algorithm is as follows:
@@ -43,30 +47,21 @@ The significant portion of our implementation of Heap's Algorithm is as follows:
  14         set[j], set[n-1] = set[n-1], set[j] #swap
 \end{verbatim}
 
-To find the total running time of our algorithm, we'll look at the number of times the following operations are executed:
-\begin{itemize}
-	\item Swaps, an $O(1)$ operation
-	\item Comparisons, an $O(1)$ operation
-	\item Assignments, an $O(1)$ operation, and
-	\item Processes (\texttt{print}s in our implementation), an $O(n)$ operation
-\end{itemize}
-
-From the code above, we can count how many times each of these operations is performed, \emph{not} including work done within the recursive calls. To better facilitate our analysis, we will also include the number of recursive calls.
-
+We'll analyze the running time of this algorithm in terms of swaps, comparisons, assignments, and processes. From the code above, we can count how many times each of these operations is performed, \emph{not} including work done within the recursive calls.
 \begin{description}
-\item Swaps
+\item Swaps ($O(1)$)
 
 	The swap operation appears only once in our implementation, on line 14. This line is never executed when $n=1$; if $n > 1$, the loop containing it executes $n$ times.
 
-\item Comparisons
+\item Comparisons ($O(1)$)
 
 	A comparison appears on line 5 regardless of the current value of $n$. Another comparison appears within the loop on line 10, which executes $n$ times for all $n > 1$. The second comparison also includes a division for modular arithmetic; we will also consider this an $O(n)$ operation.
 
-\item Assignments
+\item Assignments ($O(1)$)
 
 	Not counting the assignments that appear within the swaps, a single assignment occurs on either line 11 or line 13. This is dependent on the result of the comparison on line 10.
 
-\item Processes
+\item Processes/\texttt{print}s ($O(n)$)
 
 	We only process a permutation in the base case of our recursion, when $n = 1$. Thus we execute a process once when $n = 1$ and 0 times in any other case.
 \end{description}
@@ -122,6 +117,51 @@ Combining this with the time complexity of each operation, the overall time comp
 
 \subsection{Space Complexity}
 
+Looking at the code above, we can see that we use the same set object throughout the series of recursive calls. Beyond that, since our recursion decrements $n$ each time and stops at 1, we will have at most $n$ (constant-size) stack-frames at any given time.
+
+The space complexity of Heap's algorithm is therefore $O(n)$.
+
 \section{The Steinhaus-Johnson-Trotter Algorithm}
+
+\newtheorem{axiom}{Axiom}[section]
+\newtheorem{lemma}{Lemma}[section]
+
+\subsection{Proof of Termination}
+
+\subsection{Proof of Correctness}
+
+\subsection{Time Complexity}
+
+Our proof of correctness shows that this algorithm correctly generates all $n!$ permutations of an $n$-element set; this means that our loop will run $n!$ times. However, unlike Heap's algorithm, this loop will not perform the same number of steps every time. Each loop iteration will perform:
+\begin{itemize}
+	\item An $O(n)$ search for the largest mobile element
+	\item A single $O(n)$ \texttt{process}
+	\item Some number of $O(1)$ direction reversals
+	\item One $O(1)$ swap
+\end{itemize}
+How can we determine the number of direction reversals? The key lies in our definition of mobility and the following fact: for each case in which item $a_{i}$ is the largest mobile element (LME), we will perform a reversal for each item $a_{j} > a_{i}$ in our set. We can therefore define the total number of reversals across \emph{all} iterations as follows:
+\[
+	R_{\text{total}} = \sum_{i = 1}^{n} \left( (\text{number of times $a_{i}$ is the LME}) \cdot (n - i) \right)
+\]
+
+\subsubsection{Solving for Largest Mobile Element Counts}
+
+We say that an element is mobile if and only if it points to a smaller element. Based on this definition, I propose the following axioms:
+\begin{axiom}
+	Since $a_{n}$ is the largest element in the set, this means that any time it is mobile, it will be the largest mobile element.
+\end{axiom}
+\begin{axiom}
+	Furthermore, $a_{n}$ will only be \emph{immobile} if it points at an edge. At this point, if another mobile element exists, $a_{n}$ will reverse direction; otherwise, no mobile elements exist and our loop terminates. Since we are sweeping $a_{n}$ back and forth across all $(n - 1)$-element permutations, it will point to an edge and lose mobility once for each of these.
+\end{axiom}
+\begin{axiom}
+	An element $a_{i}$ can be mobile in an $n$-element permutation $\pi$ if it would be mobile in the $i$-element permutation $\pi - a_{j}$ for all $j > i$.
+\end{axiom}
+Extending axiom 2.3, we can see the following: since we're assuming that each possible permutation of an $(n - 1)$-element set appears $n$ times in permutations of an $n$-element set, any $(n - 1)$-element permutation $\pi_{n - 1}$ in which $a_{n - 1}$ is the LME will appear $n$ times in permutations of $n$ elements. Of these, $a_{n}$ will be the LME in any case where it is mobile by axiom 2.1. Since $a_{n}$ will be mobile for all but one of the $n$ repetitions of $\pi_{n - 1}$. In this permutation $\pi$, $a_{n - 1}$ is the LME of $\pi - a_{n}$ and $a_{n}$ is immobile. Therefore, $a_{n - 1}$ is the LME in $\pi$.
+
+We can therefore conclude that in permutations of $n$ elements, $a_{n - 1}$ is the LME exactly once for every $(n - 1)$-element permutation for which $a_{n - 1}$ is the LME. By axiom 2.1, this is any $(n - 1)$-element permutation in which $a_{n - 1}$ is mobile.
+
+Axiom 2.2 tells us that $a_{n}$ loses mobility exactly once for each $(n - 1)$-element permutation, of which there are $(n - 1)!$. Therefore, the number of times $a_{n}$ is the largest mobile element in a permutation of $m$ elements for all $m \geq n$ is equal to exactly $n! - (n - 1)!$.
+
+\subsection{Space Complexity}
 
 \end{document}  
