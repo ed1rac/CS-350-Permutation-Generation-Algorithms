@@ -134,7 +134,7 @@ The space complexity of Heap's algorithm is therefore $O(n)$.
 
 Our proof of correctness shows that this algorithm correctly generates all $n!$ permutations of an $n$-element set; this means that our loop will run $n!$ times. However, unlike Heap's algorithm, this loop will not perform the same number of steps every time. Each loop iteration will perform:
 \begin{itemize}
-	\item An $O(n)$ search for the largest mobile element
+	\item A search for the largest mobile element, which is broken into $n$ mobility checks and $c$ comparisons against the current largest mobile element (where $c$ is the sum of the numbers of mobile elements for each iteration)
 	\item A single $O(n)$ \texttt{process}
 	\item Some number of $O(1)$ direction reversals
 	\item One $O(1)$ swap
@@ -154,13 +154,34 @@ We say that an element is mobile if and only if it points to a smaller element. 
 	Furthermore, $a_{n}$ will only be \emph{immobile} if it points at an edge. At this point, if another mobile element exists, $a_{n}$ will reverse direction; otherwise, no mobile elements exist and our loop terminates. Since we are sweeping $a_{n}$ back and forth across all $(n - 1)$-element permutations, it will point to an edge and lose mobility once for each of these.
 \end{axiom}
 \begin{axiom}
-	An element $a_{i}$ can be mobile in an $n$-element permutation $\pi$ if it would be mobile in the $i$-element permutation $\pi - a_{j}$ for all $j > i$.
+	An element $a_{i}$ can be mobile in an $n$-element permutation $\pi$ if and only if it would be mobile in the $i$-element permutation $\pi - a_{j}$ for all $j > i$.
 \end{axiom}
 Extending axiom 2.3, we can see the following: since we're assuming that each possible permutation of an $(n - 1)$-element set appears $n$ times in permutations of an $n$-element set, any $(n - 1)$-element permutation $\pi_{n - 1}$ in which $a_{n - 1}$ is the LME will appear $n$ times in permutations of $n$ elements. Of these, $a_{n}$ will be the LME in any case where it is mobile by axiom 2.1. Since $a_{n}$ will be mobile for all but one of the $n$ repetitions of $\pi_{n - 1}$. In this permutation $\pi$, $a_{n - 1}$ is the LME of $\pi - a_{n}$ and $a_{n}$ is immobile. Therefore, $a_{n - 1}$ is the LME in $\pi$.
 
 We can therefore conclude that in permutations of $n$ elements, $a_{n - 1}$ is the LME exactly once for every $(n - 1)$-element permutation for which $a_{n - 1}$ is the LME. By axiom 2.1, this is any $(n - 1)$-element permutation in which $a_{n - 1}$ is mobile.
 
 Axiom 2.2 tells us that $a_{n}$ loses mobility exactly once for each $(n - 1)$-element permutation, of which there are $(n - 1)!$. Therefore, the number of times $a_{n}$ is the largest mobile element in a permutation of $m$ elements for all $m \geq n$ is equal to exactly $n! - (n - 1)!$.
+
+Substituting this back into our equation for $R_{\text{total}}$, we get the following result:
+\[
+	R_{\text{total}} = \sum_{i = 1}^{n} \left( \left( i! - (i - 1)! \right) \cdot \left( n - i \right) \right)
+\]
+
+\subsubsection{Mobility Counts}
+
+We can solve for mobility counts in a similar fashion. Every $(n - 1)$-element permutation appears $n$ times in the set of $n$-elements. Element $a_{n}$ will be swept across each position in $\pi_{n - 1}$. The combination of these two facts tells us that if an element $a_{i}$ is mobile in $\pi_{n - 1}$, it will be mobile in every $n$-element permutation that extends $\pi_{n - 1}$ except for the one case in which $a_{n}$ is between $a_{i}$ and the (smaller) element that $a_{i}$ points to.
+
+We know that $a_{n}$ is mobile in $(n! - (n - 1)!)$ of the $n$-element permutations in which it first appears. By this reasoning, it will now be mobile in $n \cdot (n! - (n - 1)!)$ permutations of $n + 1$ elements, $(n + 1) \cdot n \cdot (n! - (n - 1)!)$ permutations of $n + 2$ elements, and so on.
+
+We can therefore solve for the total number of mobile elements across all iterations (which is also the total number of comparisons made to find the largest mobile element in each iteration) as follows:
+\[
+	C_{\text{total}} = \sum_{i = 1}^{n} \left( \left( i! - (i - 1)! \right) \cdot \frac{(n - 1)!}{(i - 1)!} \right)
+\]
+
+The overall time complexity of the Steinhaus-Johnson-Trotter algorithm is therefore:
+\[
+	n! \cdot (2n + 1)+ \sum_{i = 1}^{n} \left( \left( i! - (i - 1)! \right) \cdot \frac{(n - 1)!}{(i - 1)!} \right) + \sum_{i = 1}^{n} \left( \left(i! - (i - 1)! \right) \cdot \left( n - i \right) \right) 
+\]
 
 \subsection{Space Complexity}
 

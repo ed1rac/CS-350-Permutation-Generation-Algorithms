@@ -10,7 +10,6 @@
 - [X] Space Complexity __-Ryan__
 - [X] Analyze Termination __-Levi__
 - [X] Analyze Correctionness  __-Levi__
-- [X] Writing the type of gibberish Litow likes __-Levi__
 - [ ] Running code and recording results __-Ryan__
 - [ ] Analysis and conclusions from results __-Group__
 ##References
