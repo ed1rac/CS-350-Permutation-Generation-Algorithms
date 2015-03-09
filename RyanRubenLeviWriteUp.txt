@@ -133,16 +133,9 @@ Methods:
 			the method can be verified easily for k = 2 or 3, the induction is 
 			complete.
 		Termination
-			We start with one largest mobile element, which we have to move n 
-			times, until it becomes immobile(not all moves may occur 
-			simultaneously). At this point we have a new largest element, 
-			which we can move at most n-1 times until it becomes immobile. We 
-			will have in total during the running of this algorithm, n largest 
-			mobile elements, with each largest mobile elements moving one less 
-			time than it's predecessor. Since this is a finite number, the 
-			algorithm itself will always terminate in exactly n! steps. Not 
-			coincidentally , this is also the time complexity of the algorithm 
-			itself. 
+By induction on n, the validity of the above algorithm is proved as follows. For n=2 it can easily be verified. Initially n is active and being the largest integer moves left through all positions until stuck with no neighbor. Now n is inactive and at an extreme position. Assuming that the algorithm works for n-1 integers, the next permutation of1,2..... n- 1 is generated, with n playing no part. Then n is reactivated and passes unobstructed to the opposite extreme. The process continues, n reversing direction for each permutation of 1,2..... n- 1, until the last permutation of 1,2,...,n-1 is generated, leaving all but n inactive. After the final traversal of n through the integers, it is also deactivated and the algorithm terminates. Thus each of the n! permutations is generated once and only once, and this algorithm will terminate in finite time.
+
+			
 		Space Complexity
 		Time Complexity
 Results & Analysis:
