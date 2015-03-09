@@ -45,23 +45,19 @@ Area of Analysis:
 Methods:
 	Heap's:
 		Explanation:
-			// WIP
-			Heap's algorithm is a permutation generation algorithm. It works
-			by recursively calling itself and at the end of each recursion is
-			swaps either the first or the last element.
-
-			// Wikipedia
-			First we set a counter i  to 1. Now we perform the following steps 
-			repeatedly, until i  is bigger than N. We use the algorithm to 	
-			generate the (N − 1)! permutations of the first N − 1 elements, 
-			adjoining the last element to each of these. This generates all of 
-			the permutations that end with the last element. Then if N is odd, 
-			we switch the first element and the last one, while if N is even 
-			we can switch the i th element and the last one (there is no 
-			difference between N even and odd in the first iteration). We add 
-			one to the counter i and repeat. In each iteration, the algorithm 
-			will produce all of the permutations that end with the element 	
-			that has just been moved to the "last" position.
+			Heap's algorithm is divide and conquer permutation generation algorithm.
+			It divides the set into subsets that all end with the same element and 
+			then generations all of the permutations that end with that element. It 
+			works by iterating from 1 to the cardinality set. In each iteration it 
+			calls itself recursively with (n − 1) as the new cardinality of the set. 
+			This recursion will continue until we have reached the case where N is 
+			equal to 1, it then outputs the current state of the set as a 
+			permutation. in-between each recursion. If N is odd, we switch the first 
+			element of the set with the last element of the set. If N is even, we 
+			switch the i'th element of the set with the last element of the set. 
+			Where i is a counter on the number of current iteration. This guarantees 
+			that in each iteration will produce all the permutations that end with 
+			the element that has been moved into the last position in the set.
 
 		Implemenation:
 			//Algorithm Heaps(n, A):
