@@ -133,9 +133,17 @@ Methods:
 			the method can be verified easily for k = 2 or 3, the induction is 
 			complete.
 		Termination
-By induction on n, the validity of the above algorithm is proved as follows. For n=2 it can easily be verified. Initially n is active and being the largest integer moves left through all positions until stuck with no neighbor. Now n is inactive and at an extreme position. Assuming that the algorithm works for n-1 integers, the next permutation of1,2..... n- 1 is generated, with n playing no part. Then n is reactivated and passes unobstructed to the opposite extreme. The process continues, n reversing direction for each permutation of 1,2..... n- 1, until the last permutation of 1,2,...,n-1 is generated, leaving all but n inactive. After the final traversal of n through the integers, it is also deactivated and the algorithm terminates. Thus each of the n! permutations is generated once and only once, and this algorithm will terminate in finite time.
+			By induction on n, the validity of the above algorithm is proved as follows. For n=2 
+			it can easily be verified. Initially n is active and being the largest element moves left 
+			through all positions until it is not pointing to a smaller element.  
+			Now n is immobile and at an extreme position. Assuming that the algorithm works for n-1 
+			integers, the next permutation of 1,2..... n- 1 is generated, with n playing no part. 
+			Then n is reactivated and passes unobstructed to the opposite extreme. The process continues,			n reversing direction for each permutation of 1,2..... n- 1, until the last permutation of 
+			1,2,...,n-1 is generated, leaving all but n inactive. After the final traversal of n 
+			through the integers, it is also deactivated and the algorithm terminates. 
+			Thus each of the n! permutations is generated once and only once, and this algorithm 
+			will terminate in finite time.
 
-			
 		Space Complexity
 		Time Complexity
 Results & Analysis:
