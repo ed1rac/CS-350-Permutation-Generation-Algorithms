@@ -37,15 +37,15 @@ Area of Analysis:
 	recursive versions of this algorithm as well.
 
 	The retractable nature of this problem has lead to the discovery and refinement of
-	more efficient combinatorial search optimization algorithms, with emphasis on the 
+	more efficient combinatorial search optimization algorithms(pg 138, Sedgwick) , with emphasis on the 
 	use of backtracking and mathematical programming, most notably being the solution 
-	to the four coloring graph problem.  
+	to the four coloring graph problem(pg 313, Lehmer).  
 
 	
 Methods:
 	Heap's:
 		Explanation:
-			Heap's algorithm is divide and conquer permutation generation algorithm.
+			Heap's algorithm is a divide and conquer permutation generation algorithm(Heap, pg 293).
 			It divides the set into subsets that all end with the same element and 
 			then generations all of the permutations that end with that element. It 
 			works by iterating from 1 to the cardinality set. In each iteration it 
@@ -98,7 +98,7 @@ Methods:
 		Time Complexity
 	SJT:
 		Explanation:
-			SJT is an example of a minimal change and decrease by one 
+			SJT is an example of a minimal change(Johnson, pg 282) and decrease by one 
 			algorithmic approach to the permutation problem. It's basic 
 			premise is first: generate a single permutation, and then morph 
 			one element repeatedly  until all unique permutations have been 
@@ -148,13 +148,19 @@ Methods:
 		Time Complexity
 Results & Analysis:
 	Heap's:
-		Space
+		Test Execution
 		Time
 		Additional Notes
+			One additional swap for each iteration, 2 comparisons
+			Extra function call overhead(recursion)
+			n comparisons each call , n! * n total
 	SJT:
-		Space
+		Test Execution
 		Time
 		Additional Notes
+		n comparisons each call 
+		Comparasions to find mobile element
+		comparison to find largest mobile element
 		
 Conclusion:
 	Time and space trade-off's of the two, specific applications where one might be better than the other, 
