@@ -83,11 +83,11 @@ Methods:
 			Assume A(n) for all n >= 1.
 			Prove for A(n+1)
 			We know the solution for A(n) is distinct, and does not contain
-			the element Elements[n+1]. First compute A(n), then run Heap's by
-			inserting Elements[n+1] into each subset of A(n). Since each 
-			subset of A(n) is distinct, and disjoint with Elements[n+1], this 
-			insertion preserves the distinctness of our result and gives us 
-			the correct solution to A(n+1).
+			the element Elements[n+1]. First compute A(n), then run Heap's for the final case, which 
+			iterates from 1 to n, swaping the element A[n+1] with the recursive subsolution to A[n-1].
+			This leaves us with the combined solution of A[n-1] with the element A[n] in each possible position
+			of the subsets A[n-1].
+			
 		Termination
 			Base case of n elements where n=1 is obviously sorted.
 			At each step of Heap's, we recurse and break n down by a 
@@ -149,6 +149,7 @@ Methods:
 Results & Analysis:
 	Heap's:
 		Test Execution
+			See attached results.
 		Time
 		Additional Notes
 			One additional swap for each iteration, 2 comparisons
@@ -156,6 +157,7 @@ Results & Analysis:
 			n comparisons each call , n! * n total
 	SJT:
 		Test Execution
+			See attached results.
 		Time
 		Additional Notes
 		n comparisons each call 
@@ -163,9 +165,14 @@ Results & Analysis:
 		comparison to find largest mobile element
 		
 Conclusion:
-	Time and space trade-off's of the two, specific applications where one might be better than the other, 
-	or is one generally better? 
-	Limitations
+	It should come as little suprise that both approaches to solving the problem had very similar time complexity 
+	results in both the theoritical and real world implementation of the solutions. Both algorithims are at essence a brute
+	force approach to generating permutations, which leads to the time complexity being equal to the solution space of the intial 
+	problem: n! As implemented, SJT is more effecient with respect to space as it is non recursive, however we could've just as easily choosen to 
+	implement heap iteratively, erasing that space complexity edge of SJT. We found no clear cut differences between Heap's and SJT, 
+	nor did we find any particular subset of problems for which either approach would perform better on. The last point
+	should be readily apparent, as any type of set that we might use as input could be emulated using an array of numbers,
+	with the final step being converting the output from numbers back into elements of the orginal set.
 
 References:
 	General:
