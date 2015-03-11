@@ -7,6 +7,7 @@
 								% TeX will automatically convert eps --> pdf in pdflatex		
 \usepackage{amssymb}
 \usepackage{amsmath}
+\usepackage{array}
 
 \setlength{\topmargin}{-0.5in}
 \setlength{\textheight}{9in}
@@ -19,15 +20,49 @@
 
 \begin{document}
 \maketitle
+\thispagestyle{empty}
 
-\tableofcontents
+\begin{abstract}
+A formal mathematical analysis of two algorithms -- Heap's and Steinhaus-Johnson-Trotter -- for generating permutations of a set. Implementation, execution and analysis of space and time performance of these two algorithms in Python. Additional consideration is given to the nature of generating permutations and how these two algorithms differ in solving that problem.
+\end{abstract}
+
+\vspace{2in}
+
+\begin{center}
+Code and detailed test results for this project can be found at the URL below:\\
+https://github.com/RyanLB/CS-350-Permutation-Generation-Algorithms
+\end{center}
+
 \newpage
 
-\section{Heap's Algorithm}
+\tableofcontents
+\thispagestyle{empty}
+\newpage
 
+\setcounter{page}{1}
+
+The application and study of algorithms in the field of combinatorics-particularly permutation generation-is an exciting area of theoretical study, albeit one with dull practical outcomes and application. This is due to the fact that generating all distinct permutations of a set is NP hard; since there are $n!$ possible permutations of an $n$-element set, even simply outputting each permutation will take $n!$ steps. As such, no deterministic algorithm exists that can generate all permutations of a set in less than $O(n!)$ time. The differences in the algorithms are wrinkles that allow for more space efficient computations, or that merely exist to show the cleverness of the designer with a novel application of a design pattern to the problem.
+
+Algorithms for this problem fall into two camps: those that generate a unique permutation of a set and those that use exchange methods to generate \emph{all} permutations of that set. Our first algorithm, Heap's Algorithm, is a recursive twist on the exchange method. The second, Steinhaus-Johnson-Trotter, is an adjacent exchange method implemented iteratively with one loop structure, although this algorithm can be implemented recursively as well.
+
+The intractable nature of this problem has lead to the discovery and refinement of more efficient combinatorial search optimization algorithms, many of which emphasize the use of backtracking and mathematical programming; perhaps most notable is the solution to the four coloring graph problem.  
+
+\section{Heap's Algorithm}
+Heap's algorithm is a ``divide-and-conquer'' permutation generation algorithm. It divides the set into subsets that all end with the same element and then generates all of the permutations that end with that element. It works by iterating from 1 to the cardinality of the set. Each iteration makes a new recursive call with $(n - 1)$ as the new cardinality of the set. This recursion will continue until we have reached the case where $n$ is equal to 1; it then outputs the current state of the set as a permutation. Between each recursive call, we check to see if $n$ is odd. If so, we switch the first element of the set with the last element of the set. If $n$ is even, we switch the $i$th element of the set with the last element of the set (where $i$ the number of current iteration). This guarantees that each iteration will produce all the permutations that end with the element that has been moved into the last position in the set.
 \subsection{Proof of Termination}
 
+At each step of Heap's, we recurse and decrement $n$ by 1. Eventually we reach the the base case of 1 element, as $n$ must be a positive integer, so no infinite descent is possible.
+
 \subsection{Proof of Correctness}
+
+// I don't even know what's going on here
+
+Given an array Elements[$n$] with $n$ elements, proof follows by induction.
+
+$A(1)$ is obviously true; a one element set is sorted
+Assume $A(n)$ for all $n \geq 1$.
+Prove for $A(n+1)$
+We know the solution for $A(n)$ is distinct, and does not contain the element Elements[$n+1$]. First compute $A(n)$, then run Heap's by inserting Elements[$n+1$] into each subset of $A(n)$. Since each subset of $A(n)$ is distinct, and disjoint with Elements[$n+1$], this insertion preserves the distinctness of our result and gives us the correct solution to $A(n+1)$.
 
 \subsection{Time Complexity}
 
@@ -99,20 +134,15 @@ This means that with recursion factored in, the total number of swaps, assignmen
 	T(n) &= n! \cdot \sum_{i = 1}^{n - 1} \frac{1}{i!} &\text{Multiply by $n!$}
 \end{align*}
 
-The number of comparisons is similar:
-\begin{align*}
-	T(n) &= n \cdot T(n - 1) + n + 1 \\
-	\frac{T(n)}{n!} &= \frac{T(n - 1)}{(n - 1)!} + \frac{1}{(n - 1)!} + \frac{1}{n!} &\text{Divide by $n!$} \\
-	&= 1 + \frac{1}{(n - 1)!} + \frac{1}{n!} &\text{Since $T(1) = 0! = 1$} \\
-	&= 1 + \sum_{i = 1}^{n - 1} \frac{1}{i!} + \sum_{i = 1}^{n} \frac{1}{i!} \\
-	&= 1 + 2 \sum_{i = 1}^{n - 1} \frac{1}{i!} + \frac{1}{n!} \\
-	T(n) &= n! + 2n! \sum_{i = 1}^{n - 1} \frac{1}{i!} + 1 &\text{Multiply by $n!$}
-\end{align*}
+Because comparisons have $n + 1$ comparisons before recursion, we can use a similar process to discover that the total number of comparisons can be expressed as:
+\[
+	n! \cdot \sum_{i = 1}^{n - 1} \frac{1}{i!} + n! \cdot \sum_{i = 1}^{n} \frac{1}{i!} = 2! \cdot \sum_{i = 1}^{n - 1} \frac{1}{i!} + 1
+\]
 
 Combining this with the time complexity of each operation, the overall time complexity is therefore as follows:
 \begin{align*}
-	&2 \cdot \left( n! \cdot \sum_{i = 1}^{n - 1} \frac{1}{i!} \right) + \left( n! + 2n! \cdot \sum_{i = 1}^{n - 1} \frac{1}{i!} + 1 \right) + n \\
-	&= n! \cdot \left(1 + 4 \cdot \sum_{1}^{n - 1} \frac{1}{i!} \right) + 1 + n
+	&2 \cdot \left( n! \cdot \sum_{i = 1}^{n - 1} \frac{1}{i!} \right) + \left( 2n! \cdot \sum_{i = 1}^{n - 1} \frac{1}{i!} + 1 \right) + n \\
+	&= n! \cdot \left( 4 \cdot \sum_{1}^{n - 1} \frac{1}{i!} \right) + 1 + n
 \end{align*}
 
 \subsection{Space Complexity}
@@ -122,13 +152,16 @@ Looking at the code above, we can see that we use the same set object throughout
 The space complexity of Heap's algorithm is therefore $O(n)$.
 
 \section{The Steinhaus-Johnson-Trotter Algorithm}
-
 \newtheorem{axiom}{Axiom}[section]
 \newtheorem{lemma}{Lemma}[section]
 
-\subsection{Proof of Termination}
+The Steinhaus-Johnson-Trotter algorithm is an example of a minimal change/decrease by one algorithmic approach to the permutation problem. It is based on the observation that all permutations of $n$ elements can be generated by taking the element $a_{n}$ and placing it in every possible position in each permutation of $n - 1$ elements.
 
-\subsection{Proof of Correctness}
+This behavior is induced by assigning each element a direction; the direction of each element is initialized to be left. We call an element mobile if and only if it points to a smaller element. As long as our set contains a mobile element, we take the largest mobile element $a_{\ell}$ and swap it with the element to which it points; at this point, we reverse the direction of every element larger than $a_{\ell}$.
+
+\subsection{Proof of Termination and Correctness}
+
+By induction on $n$, the validity of the above algorithm is proven as follows. As a base case, we can easily verify that the algorithm is true for sets of two elements. Initially $a_{n}$ is active and being the largest element moves left through all positions until it is not pointing to a smaller element. Now $a_{n}$ is immobile and at an extreme position. Assuming that the algorithm works for $n-1$ integers, the next permutation of $n - 1$ elements is generated, with $n$ playing no part. At this point, $a_{n}$ becomes mobile again and passes unobstructed to the opposite extreme. The process continues, with $a_{n}$ reversing direction for each permutation $n- 1$ elements, until the last permutation of $n-1$ elements is generated, leaving all but $a_{n}$ immobile. After the final traversal of $n$, it also immobilized and the algorithm terminates. Thus each of the $n!$ permutations is generated once and only once, and this algorithm will terminate in finite time.
 
 \subsection{Time Complexity}
 
@@ -137,7 +170,7 @@ Our proof of correctness shows that this algorithm correctly generates all $n!$ 
 	\item A search for the largest mobile element, which is broken into $n$ mobility checks and $c$ comparisons against the current largest mobile element (where $c$ is the sum of the numbers of mobile elements for each iteration)
 	\item A single $O(n)$ \texttt{process}
 	\item Some number of $O(1)$ direction reversals
-	\item One $O(1)$ swap
+	\item One $O(1)$ swap (except for the last iteration, in which no swaps occur)
 \end{itemize}
 How can we determine the number of direction reversals? The key lies in our definition of mobility and the following fact: for each case in which item $a_{i}$ is the largest mobile element (LME), we will perform a reversal for each item $a_{j} > a_{i}$ in our set. We can therefore define the total number of reversals across \emph{all} iterations as follows:
 \[
@@ -164,7 +197,7 @@ Axiom 2.2 tells us that $a_{n}$ loses mobility exactly once for each $(n - 1)$-e
 
 Substituting this back into our equation for $R_{\text{total}}$, we get the following result:
 \[
-	R_{\text{total}} = \sum_{i = 1}^{n} \left( \left( i! - (i - 1)! \right) \cdot \left( n - i \right) \right)
+	R_{\text{total}} = \sum_{i = 1}^{n - 1} \left( \left( i! - (i - 1)! \right) \cdot \left( n - i \right) \right)
 \]
 
 \subsubsection{Mobility Counts}
@@ -180,9 +213,54 @@ We can therefore solve for the total number of mobile elements across all iterat
 
 The overall time complexity of the Steinhaus-Johnson-Trotter algorithm is therefore:
 \[
-	n! \cdot (2n + 1)+ \sum_{i = 1}^{n} \left( \left( i! - (i - 1)! \right) \cdot \frac{(n - 1)!}{(i - 1)!} \right) + \sum_{i = 1}^{n} \left( \left(i! - (i - 1)! \right) \cdot \left( n - i \right) \right) 
+	n! \cdot (2n + 1)+ \sum_{i = 1}^{n - 1} \left( \left( i! - (i - 1)! \right) \cdot \frac{(n - 1)!}{(i - 1)!} \right) + \sum_{i = 1}^{n} \left( \left(i! - (i - 1)! \right) \cdot \left( n - i \right) \right) 
 \]
 
 \subsection{Space Complexity}
+
+Since this is an iterative algorithm, we can accomplish everything within a single stack frame (while we've divided our code with function calls, the number of simultaneously active stack frames remains constant with respect to $n$). This algorithm needs only an $n$-element array to hold its elements and another $n$-element array to hold the direction in which each element points.
+
+\section{Testing Methodology}
+
+\subsection{Correctness Tests}
+
+Both algorithms were tested for correctness on random sets of up to six elements. These elements were then sorted, as this is required by the Steinhaus-Johnson-Trotter algorithm. The sets were then passed to the python permutation generator and the algorithm in test, and the results were compared to ensure that they were the same.
+
+\subsection{Time Complexity Profiling}
+
+In order to ensure that our time complexities were correct, basic operations (e.g. swaps, comparisons, assignments, and the like) were factored out into their own functions. Python's \texttt{cProfile} framework was then used to count the number of times each function was called.
+
+\subsubsection{Direct Comparisons and Hypotheses}
+
+By breaking down our functions into swaps, comparisons, assignments, and recursive calls, we can directly compare the running time of the two algorithms for an input of size $n$. For the purposes of comparison, we consider each direction reversal in SJT to be comprised of a comparison and an assignment and each mobility check to be comprised of two comparisons.
+
+\begin{center}
+\setlength{\extrarowheight}{.5em}
+\begin{tabular}{|c|c|c|c|}
+	\hline
+	& Heap's & SJT & Larger \\
+	\hline
+	Swaps & $n! \cdot \sum_{i = 1}^{n - 1} \frac{1}{i!}$ & $n! - 1$ & Heap's \\
+	\hline
+	Compares & $2n! \sum_{i = 1}^{n - 1} \frac{1}{i!}$ + 1 & $n \cdot n! + 2 \sum_{i = 1}^{n} \left( \left( i! - (i - 1)! \right) \cdot \frac{(n - 1)!}{(i - 1)!} \right) + \sum_{i = 1}^{n} \left( \left( i! - (i - 1)! \right) \cdot (n - i) \right)$ & SJT \\
+	\hline
+	Assigns & $n! \cdot \sum_{i = 1}^{n - 1} \frac{1}{i!}$ & $\sum_{i = 1}^{n} \left( \left( i! - (i - 1)! \right) \cdot (n - i) \right)$ & Heap's \\
+	\hline
+	Processes & $n!$ & $n!$ & Tie \\
+	\hline
+	Calls & $n! \cdot \sum_{i = 1}^{n - 1} \frac{1}{i!}$ & 0 & Heap's \\
+	\hline
+\end{tabular}
+\end{center}
+
+With this in mind, we expect Heap's algorithm to have the longest real-world running time.
+
+\section{Test Results}
+
+\subsection{Correctness Results}
+
+Both algorithms passed the correctness check without issue.
+
+\subsection{Time Complexity Results}
 
 \end{document}  
