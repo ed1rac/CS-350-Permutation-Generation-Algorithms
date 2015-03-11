@@ -224,7 +224,7 @@ Since this is an iterative algorithm, we can accomplish everything within a sing
 
 \subsection{Correctness Tests}
 
-Both algorithms were tested for correctness on random sets of up to six elements. These elements were then sorted, as this is required by the Steinhaus-Johnson-Trotter algorithm. The sets were then passed to the python permutation generator and the algorithm in test, and the results were compared to ensure that they were the same.
+To test for correctness we randomly generated sets of zero to six elements and then feed there to our algorithms. The output of the algorithms was then cross checked against the Python's standard library permutation generation algorithm, which we assume is correct, if both outputs matched then we can assume our permutation generation algorithm is correct. (Or at least as correct as Python's standard library permutation generation algorithm.)
 
 \subsection{Time Complexity Profiling}
 
