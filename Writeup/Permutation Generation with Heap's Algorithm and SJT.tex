@@ -45,56 +45,77 @@ The application and study of algorithms in the field of combinatorics-particular
 
 Algorithms for this problem fall into two camps: those that generate a unique permutation of a set and those that use exchange methods to generate \emph{all} permutations of that set. Our first algorithm, Heap's Algorithm, is a recursive twist on the exchange method. The second, Steinhaus-Johnson-Trotter, is an adjacent exchange method implemented iteratively with one loop structure, although this algorithm can be implemented recursively as well.
 
-The intractable nature of this problem has lead to the discovery and refinement of more efficient combinatorial search optimization algorithms, many of which emphasize the use of backtracking and mathematical programming; perhaps most notable is the solution to the four coloring graph problem.  
+The intractable nature of this problem has lead to the discovery and refinement of more efficient combinatorial search optimization algorithms \cite{sedgewick}, many of which emphasize the use of backtracking and mathematical programming; perhaps most notable is the solution to the four coloring graph problem \cite{lehmer}.  
 
 \section{Heap's Algorithm}
-Heap's algorithm is a ``divide-and-conquer'' permutation generation algorithm. It divides the set into subsets that all end with the same element and then generates all of the permutations that end with that element. It works by iterating from 1 to the cardinality of the set. Each iteration makes a new recursive call with $(n - 1)$ as the new cardinality of the set. This recursion will continue until we have reached the case where $n$ is equal to 1; it then outputs the current state of the set as a permutation. Between each recursive call, we check to see if $n$ is odd. If so, we switch the first element of the set with the last element of the set. If $n$ is even, we switch the $i$th element of the set with the last element of the set (where $i$ the number of current iteration). This guarantees that each iteration will produce all the permutations that end with the element that has been moved into the last position in the set.
+Heap's algorithm is a ``divide-and-conquer'' permutation generation algorithm \cite{heap}. It divides the set into subsets that all end with the same element and then generates all of the permutations that end with that element. It works by iterating from 1 to the cardinality of the set. Each iteration makes a new recursive call with $(n - 1)$ as the new cardinality of the set. This recursion will continue until we have reached the case where $n$ is equal to 1; it then outputs the current state of the set as a permutation. Between each recursive call, we check to see if $n$ is odd. If so, we switch the first element of the set with the last element of the set. If $n$ is even, we switch the $i$th element of the set with the last element of the set (where $i$ the number of current iteration). This guarantees that each iteration will produce all the permutations that end with the element that has been moved into the last position in the set.
+
+\subsection{Pseudocode}
+\begin{verbatim}
+ //Algorithm Heaps(n, A):
+ //Outputs all the permutations of A using Heap's algorithm
+ //Input: A is a set, n is the cardinality of the set A
+ //Output: The permutations of A
+ if n = 1 then
+   output(A)
+ else
+   for i <- 1 to n
+     Heaps(n - 1, A)
+     if n is odd then
+       j <- 1
+     else
+       j <- i
+     swap(A[j], A[n])
+     i <- i + 1
+\end{verbatim}
+
 \subsection{Proof of Termination}
 
 At each step of Heap's, we recurse and decrement $n$ by 1. Eventually we reach the the base case of 1 element, as $n$ must be a positive integer, so no infinite descent is possible.
 
 \subsection{Proof of Correctness}
 
-// I don't even know what's going on here
+It is trivial to establish that this algorithm correctly outputs all distinct permutations of 1, 2, and 3-element sets. Since the algorithm works by recursively generating all $(n - 1)$-element sets, we can then use induction to show that it works for arbitrarily large values of $n$. However, because the algorithm behaves differently depending on whether $n$ is even or odd, we'll need two separate inductive steps to prove correctness.
 
-Given an array Elements[$n$] with $n$ elements, proof follows by induction.
+Based on observations made with small values of $n$, we can make two inductive hypotheses:
+\begin{enumerate}
+	\item If $n$ is odd, assume that Heap's algorithm correctly generates all $n!$ permutations and that upon completion, the elements of $S$ are in the same order as when the algorithm began
+	\item If $n$ is even, assume that Heap's algorithm correctly generates all $n!$ permutations and that upon completion, the elements of $S$ have been rotated one space to the right (e.g. if the algorithm is run on the set $(s_{1}, s_{2}, \dots, s_{n - 1}, s_{n})$, $S$ is in the order $(s_{n}, s_{1}, \dots, s_{n - 2}, s_{n - 1})$ when the algorithm terminates).
+\end{enumerate}
 
-$A(1)$ is obviously true; a one element set is sorted
-Assume $A(n)$ for all $n \geq 1$.
-Prove for $A(n+1)$
-We know the solution for $A(n)$ is distinct, and does not contain the element Elements[$n+1$]. First compute $A(n)$, then run Heap's by inserting Elements[$n+1$] into each subset of $A(n)$. Since each subset of $A(n)$ is distinct, and disjoint with Elements[$n+1$], this insertion preserves the distinctness of our result and gives us the correct solution to $A(n+1)$.
+Assume that Heap's algorithm correctly generates all permutations of a $k$-element set $S$. We then have two cases to consider.
+
+\subsubsection{$k$ is Odd}
+
+To correctly generate all permutations of a $k + 1$ element set $S$, we can simply generate every permutation of each $k$-element subset and append the missing element to the end. To do this, we'll need to make $n$ recursive calls, each time withholding a different element.
+
+Since we're generating permutations of the elements in positions $1 \dots k$, we can ensure that each recursive call acts on a distinct subset by placing a different element in position $k + 1$ in each iteration. Since $k$ is odd, the items in positions $1 - k$ will be in the same order after each recursive call runs. Therefore, iterating from $1 \dots k + 1$, making a recursive call, and then swapping $s_{i}$ with $s_{k + 1}$ will place each element of $S$ in position $k + 1$ once and only once. Since we assume that we're correctly generating permutations of $k$-element sets, this implies correctness.
+
+Notice also that each element $s_{i}$ for $i \leq k$ will move one position to the right, since it will be swapped into position $k + 1$ and then swapped back into position $i + 1$ on the next iteration. The final iteration will swap the element in position $k + 1$ with the element in position $k + 1$, meaning that we don't rotate all the way back to the starting condition. This confirms that the elements of $S$ will be rotated one position to the right when the algorithm terminates (since $k$ is odd, $k + 1$ is even).
+
+\subsubsection{$k$ is Even}
+
+Since $k$ is even, each call made on a $k + 1$ element set will rotate the items in positions $1 \dots k$ one position to the right. This means that we no longer have to iterate across positions when swapping elements in and out of position $k + 1$; we can let the rotation of the elements take care of this for us, swapping the elements in positions $1$ and $k + 1$ after each recursive call.
+
+Since a call (and rotation) occur before the first swap, we can see that items $s_{1} \dots s_{k}$ will be swapped into location $k + 1$ in reverse order; for the same reason, they will be swapped back into location 1 in reverse order as well. This means that the elements of $S$ will maintain the same relative order when our algorithm terminates. We can also see that $s_{k + 1}$ is swapped into position 1 after the first recursive call. Since $k$ recursive calls remain, it will then be rotated $k$ times through $k$ positions and return to location 1 after the final recursive call. The final swap will return it to location $k + 1$. Since elements are in the same relative order and $s_{k + 1}$ ends in position $k + 1$, this confirms that running our algorithm on sets with an odd number of elements leaves the order of the elements unchanged.
+
+We have now proven that both inductive hypotheses are true. Since we have established base cases for both even and odd values of $n$, this proves the correctness of Heap's algorithm for all $n \geq 1$, regardless of whether $n$ is even or odd.
 
 \subsection{Time Complexity}
-
-The significant portion of our implementation of Heap's Algorithm is as follows:
-\begin{verbatim}
-  3 def heaps(set, time=False):
-  4   def innerHeaps(n, set):
-  5     if n == 1:
-  6       print set
-  7     else:
-  8       for i in range(n):
-  9         innerHeaps(n-1, set)
- 10         if n % 2 == 1: #odd number
- 11           j = 0
- 12         else:
- 13           j = i
- 14         set[j], set[n-1] = set[n-1], set[j] #swap
-\end{verbatim}
 
 We'll analyze the running time of this algorithm in terms of swaps, comparisons, assignments, and processes. From the code above, we can count how many times each of these operations is performed, \emph{not} including work done within the recursive calls.
 \begin{description}
 \item Swaps ($O(1)$)
 
-	The swap operation appears only once in our implementation, on line 14. This line is never executed when $n=1$; if $n > 1$, the loop containing it executes $n$ times.
+	The swap operation appears only once in our implementation. This is never executed when $n=1$; if $n > 1$, the loop containing it executes $n$ times.
 
 \item Comparisons ($O(1)$)
 
-	A comparison appears on line 5 regardless of the current value of $n$. Another comparison appears within the loop on line 10, which executes $n$ times for all $n > 1$. The second comparison also includes a division for modular arithmetic; we will also consider this an $O(n)$ operation.
+	A comparison appears before we enter our loop regardless of the current value of $n$. Another comparison appears within the loop, which executes $n$ times for all $n > 1$. The second comparison also includes a division for modular arithmetic; we will also consider this an $O(n)$ operation.
 
 \item Assignments ($O(1)$)
 
-	Not counting the assignments that appear within the swaps, a single assignment occurs on either line 11 or line 13. This is dependent on the result of the comparison on line 10.
+	Not counting the assignments that appear within the swaps, a single assignment occurs after the comparison that checks whether $n$ is odd.
 
 \item Processes/\texttt{print}s ($O(n)$)
 
@@ -155,9 +176,23 @@ The space complexity of Heap's algorithm is therefore $O(n)$.
 \newtheorem{axiom}{Axiom}[section]
 \newtheorem{lemma}{Lemma}[section]
 
-The Steinhaus-Johnson-Trotter algorithm is an example of a minimal change/decrease by one algorithmic approach to the permutation problem. It is based on the observation that all permutations of $n$ elements can be generated by taking the element $a_{n}$ and placing it in every possible position in each permutation of $n - 1$ elements.
+The Steinhaus-Johnson-Trotter algorithm is an example of a minimal change/decrease by one algorithmic approach to the permutation problem \cite{johnson}. It is based on the observation that all permutations of $n$ elements can be generated by taking the element $a_{n}$ and placing it in every possible position in each permutation of $n - 1$ elements.
 
 This behavior is induced by assigning each element a direction; the direction of each element is initialized to be left. We call an element mobile if and only if it points to a smaller element. As long as our set contains a mobile element, we take the largest mobile element $a_{\ell}$ and swap it with the element to which it points; at this point, we reverse the direction of every element larger than $a_{\ell}$.
+
+\subsection{Pseudocode}
+\begin{verbatim}
+//Algorithim: Steinhaus-Johnson-Trotter(A[n])
+//Input    : Array of sorted integers
+//Output   : All permutations of A[n]
+ 
+initialize D = [<- <- <- ... <-] (from 1 to n)
+ 
+while there exists a mobile element
+    k <- the largest mobile integer in A
+    swap k and the element it points to
+    reverse the direction of all elements in A larger than k
+\end{verbatim}
 
 \subsection{Proof of Termination and Correctness}
 
@@ -253,7 +288,7 @@ By breaking down our functions into swaps, comparisons, assignments, and recursi
 \end{tabular}
 \end{center}
 
-With this in mind, we expect Heap's algorithm to have the longest real-world running time.
+With this in mind, we expect Heap's algorithm to have the longest real-world running time. To test this, each algorithm was run for inputs of sizes 5, 6, 7, and 8 100 times. The clock times for these 100 tests were then averaged and compared. While clock time is not the sole measurement of computing efficiency, it is the standard by which most end users judge the performance of their software.
 
 \section{Test Results}
 
@@ -264,22 +299,39 @@ Both algorithms passed the correctness check without issue.
 \subsection{Time Complexity Results}
 
 \begin{center}
-Average Running Times Across 10 Tests \\
+Average Running Times Across 100 Tests \\
 \begin{tabular}{|c|c|c|c|c|}
 	\hline
 	Input Size & 5 & 6 & 7 & 8 \\
 	\hline
-	Heap's Average Running Time (seconds) & & & & \\
+	Heap's Average Running Time (seconds) & 0.00439 & 0.0279 & 0.21779 & 1.85517 \\
 	\hline
-	SJT Average Running Time (seconds) & & & & \\
+	SJT Average Running Time (seconds) & 0.00118 & 0.00988 & 0.08201 & 0.70469 \\
 	\hline
 \end{tabular}
 \end{center}
 
 \section{Conclusions}
 
-This is not the result reached by Robert Sedgewick in his 1977 paper ``Permutation Generation Methods''. Sedgewick concluded that Heap's algorithm was, at the time, the fastest method for generating permutations. However, he did this by hand-writing assembly code in a pseudo-assembly language that he developed himself.
+The Steinhaus-Johnson-Trotter algorithm noticeably outperformed Heap's algorithm for each of the input sizes tested. This is not the result reached by Robert Sedgewick in his 1977 paper ``Permutation Generation Methods''. Sedgewick concluded that Heap's algorithm was, at the time, the fastest method for generating permutations \cite{sedgewick}. However, he did this by hand-writing assembly code in a pseudo-assembly language that he developed himself.
 
-It is the opinion of this group that if both algorithms are implemented reasonably in a high-level programming language (e.g. Python), the Steinhaus-Johnson-Trotter algorithm will perform better.
+In cases where the data is not originally sorted, this may not be the case, as the Steinhaus-Johnson-Trotter algorithm relies on the positions and relative values of elements to induce correct behavior with its definitions of mobility. If the data is not sorted (or if elements are types such as strings, where comparisons may take a disproportionately long time compared to other operations), though, the algorithm can be adapted to generate permutations of element indices instead. This will generate the same permutations, but will increase the cost of \texttt{process} operations by $n$ additional dereferences.
+
+It is the conclusion of this group that if both algorithms are implemented reasonably in a high-level programming language (e.g. Python), the Steinhaus-Johnson-Trotter algorithm will yield better overall performance.
+
+\newpage
+\begin{thebibliography}{9}
+	\bibitem{heap}
+	Heap, B. R. (1963). ``Permutations by Interchanges''. The Computer Journal 6 (3): 293?4. doi:10.1093/comjnl/6.3.293
+	
+	\bibitem{johnson}
+	Johnson, Selmer M. (1963), ``Generation of permutations by adjacent transposition'', Mathematics of Computation 17: 282?285, doi:10.1090/S0025-5718-1963-0159764-2, JSTOR 2003846, MR 0159764
+	
+	\bibitem{lehmer}
+	D. H. Lehmer (1960) ``Proceedings of Symposia in Applied Mathematics'', American Mathematical Society, Vol. 10, p. 179
+	
+	\bibitem{sedgewick}
+	Sedgewick, Robert (1977), ``Permutation generation methods'', ACM Computer Survey 9 (2): 137?164, doi:10.1145/356689.356692
+\end{thebibliography}
 
 \end{document}  
