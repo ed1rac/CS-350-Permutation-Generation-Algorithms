@@ -8,6 +8,7 @@
 \usepackage{amssymb}
 \usepackage{amsmath}
 \usepackage{array}
+\usepackage[colorlinks = false]{hyperref}
 
 \setlength{\topmargin}{-0.5in}
 \setlength{\textheight}{9in}
@@ -23,14 +24,14 @@
 \thispagestyle{empty}
 
 \begin{abstract}
-A formal mathematical analysis of two algorithms -- Heap's and Steinhaus-Johnson-Trotter -- for generating permutations of a set. Implementation, execution and analysis of space and time performance of these two algorithms in Python. Additional consideration is given to the nature of generating permutations and how these two algorithms differ in solving that problem.
+A formal mathematical analysis of two algorithms -- Heap's and Steinhaus-Johnson-Trotter -- for generating permutations of a set. Implementation, execution and analysis of space and time performance of these two algorithms. Additional consideration is given to the nature of generating permutations and how these two algorithms differ in solving that problem.
 \end{abstract}
 
 \vspace{2in}
 
 \begin{center}
 Code and detailed test results for this project can be found at the URL below:\\
-https://github.com/RyanLB/CS-350-Permutation-Generation-Algorithms
+\url{https://github.com/RyanLB/CS-350-Permutation-Generation-Algorithms}
 \end{center}
 
 \newpage
@@ -41,7 +42,7 @@ https://github.com/RyanLB/CS-350-Permutation-Generation-Algorithms
 
 \setcounter{page}{1}
 
-The application and study of algorithms in the field of combinatorics-particularly permutation generation-is an exciting area of theoretical study, albeit one with dull practical outcomes and application. This is due to the fact that generating all distinct permutations of a set is NP hard; since there are $n!$ possible permutations of an $n$-element set, even simply outputting each permutation will take $n!$ steps. As such, no deterministic algorithm exists that can generate all permutations of a set in less than $O(n!)$ time. The differences in the algorithms are wrinkles that allow for more space efficient computations, or that merely exist to show the cleverness of the designer with a novel application of a design pattern to the problem.
+The application and study of algorithms in the field of combinatorics -- particularly permutation generation -- is an exciting area of theoretical study. Generating all distinct permutations of a set is NP hard; since there are $n!$ possible permutations of an $n$-element set, even simply outputting each permutation will take $n!$ steps. As such, no deterministic algorithm exists that can generate all permutations of a set in less than $O(n!)$ time. The differences in the algorithms are wrinkles that allow for more space efficient computations, or that merely exist to show the cleverness of the designer with a novel application of a design pattern to the problem.
 
 Algorithms for this problem fall into two camps: those that generate a unique permutation of a set and those that use exchange methods to generate \emph{all} permutations of that set. Our first algorithm, Heap's Algorithm, is a recursive twist on the exchange method. The second, Steinhaus-Johnson-Trotter, is an adjacent exchange method implemented iteratively with one loop structure, although this algorithm can be implemented recursively as well.
 
@@ -146,7 +147,7 @@ Our total number of operations (not counting recursion) can be represented by th
 
 Looking only at the recursive calls, it becomes clear that the number of recursive calls made for an input of size $n$ is 0 when $n = 1$ and $n$ for any $n > 1$ (we can confirm this by looking at the loop in our code). It follows that if we wish to include operations executed within recursive calls, the total number of times that each operation will execute on an input of size $n$ will be the number of times that this operation executes in the work function plus $n$ times the number of times that operation is performed for an input of size $n - 1$.
 
-This means that with recursion factored in, the total number of swaps, assignments, and recursive calls can be expressed as follows:
+This means that with recursion factored in, the total number of swaps, assignments, and recursive calls can be expressed as follows \cite{siena}:
 \begin{align*}
 	T(n) &= n \cdot T(n - 1) + n \\
 	\frac{T(n)}{n!} &= \frac{T(n - 1)}{(n - 1)!} + \frac{1}{(n - 1)!} &\text{Divide by $n!$} \\
@@ -332,6 +333,12 @@ It is the conclusion of this group that if both algorithms are implemented reaso
 	
 	\bibitem{sedgewick}
 	Sedgewick, Robert (1977), ``Permutation generation methods'', ACM Computer Survey 9 (2): 137?164, doi:10.1145/356689.356692
+
+
+	\bibitem{siena}
+	Homework solutions from Eric Breimer's Analysis of Algorithms course at Siena College. While homework solutions may not be the most rigorously peer-reviewed sources, this did give me the idea to divide the total number of swaps by $n!$, which was essential to finding the time complexity of Heap's algorithm. \\
+	\url{http://www.cs.siena.edu/~ebreimer/courses/csis-385-s04/homework/text5}
+
 \end{thebibliography}
 
 \end{document}  

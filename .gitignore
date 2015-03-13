@@ -3,6 +3,7 @@
 *.toc
 *.aux
 *.pyc
+*.out
 
 # Virtualenv
 .Python
